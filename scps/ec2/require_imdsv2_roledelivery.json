@@ -1,0 +1,15 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Deny",
+            "Action": "*",
+            "Resource": "*",
+            "Condition": {
+                "NumericLessThan": {
+                    "ec2:RoleDelivery": "2.0"
+                }
+            }
+        }
+    ]
+}

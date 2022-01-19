@@ -1,0 +1,16 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "shield:DeleteProtection",
+                "shield:DeleteSubscription",
+                "shield:DisassociateDRTLogBucket",
+                "shield:DisassociateDRTRole",
+                "shield:UpdateEmergencyContactSettings"
+            ],
+            "Resource": "*",
+            "Effect": "Deny"
+        }
+    ]
+}

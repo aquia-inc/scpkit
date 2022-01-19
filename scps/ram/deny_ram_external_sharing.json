@@ -1,0 +1,15 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": "*",
+            "Resource": "*",
+            "Effect": "Deny",
+            "Condition": {
+                "Bool": {
+                    "ram:AllowsExternalPrincipals": "true"
+                }
+            }
+        }
+    ]
+}

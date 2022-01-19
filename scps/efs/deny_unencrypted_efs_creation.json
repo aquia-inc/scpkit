@@ -1,0 +1,17 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Deny",
+            "Action": [
+                "elasticfilesystem:CreateFileSystem"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "Bool": {
+                    "elasticfilesystem:Encrypted": "false"
+                }
+            }
+        }
+    ]
+}

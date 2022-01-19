@@ -1,0 +1,18 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Deny",
+            "Action": [
+                "sagemaker:CreateNotebookInstance",
+                "sagemaker:UpdateNotebookInstance"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "sagemaker:RootAccess": "Enabled"
+                }
+            }
+        }
+    ]
+}

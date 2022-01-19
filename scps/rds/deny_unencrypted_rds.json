@@ -1,0 +1,22 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Deny",
+            "Action": [
+                "rds:CreateDBCluster",
+                "rds:CreateDBInstance",
+                "rds:RestoreDBClusterFromS3",
+                "rds:RestoreDBInstanceFromS3",
+                "rds:RestoreDBClusterFromDBSnapshot",
+                "rds:RestoreDBClusterToPointInTime"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "Bool": {
+                    "rds:StorageEncrypted": "false"
+                }
+            }
+        }
+    ]
+}

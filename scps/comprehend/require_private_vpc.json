@@ -1,0 +1,31 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Deny",
+            "Action": [
+                "comprehend:CreateDocumentClassifier",
+                "comprehend:CreateEntityRecognizer",
+                "comprehend:StartDocumentClassificationJob",
+                "comprehend:StartDominantLanguageDetectionJob",
+                "comprehend:StartEntitiesDetectionJob",
+                "comprehend:StartKeyPhrasesDetectionJob",
+                "comprehend:StartSentimentDetectionJob",
+                "comprehend:StartTopicsDetectionJob"
+            ],
+            "Resource": [
+                "*"
+            ],
+            "Condition": {
+                "Null": {
+                    "comprehend:VpcSecurityGroupIds": [
+                        "true"
+                    ],
+                    "comprehend:VpcSubnets": [
+                        "true"
+                    ]
+                }
+            }
+        }
+    ]
+}
