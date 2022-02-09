@@ -9,8 +9,8 @@ Options:
     --keep-sids                 Keeps Sids for metadata purposes
 """
 from docopt import docopt
-from lib.validate import validate_policies
-from lib.merge import scp_merge
+from src.validate import validate_policies
+from src.merge import scp_merge
 
 def main():
     arguments = {
