@@ -1,1 +1,17 @@
 # scpkit
+
+## What it is
+
+This project is intended to accomplish two things
+
+1. Create a collection of validated Service Control Policies that an AWS administrator may want to apply to their Org
+2. With the current limit of 5 SCPs and a size limit on each of 5120 bytes, multiple SCPs need to be condensed into fewer policies. This tool will merge selected SCPs into the fewest amount of policies, and optionally remove whitespaces characters as they count toward the byte limit.
+
+
+```
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements
+python main.py [commands]
+```
+setup.py will be added once stabilized.
