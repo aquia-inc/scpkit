@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from .model import SCP
 
 def load_json(filepath):
     """Loads json content from files
@@ -11,16 +12,6 @@ def load_json(filepath):
     with open(filepath) as f:
         data = json.load(f)
     return data
-
-
-def dump_scp_to_json(content):
-    """JSON.dumps with no spaces in separators
-    Args:
-        content (dict): dictionary to dump to json
-    Returns:
-        str: string of condensed json
-    """
-    return json.dumps(content, separators=(',', ':'))
 
 
 def write_json(content, directory):
@@ -45,8 +36,7 @@ def get_files_in_dir(folder):
     """
 
     p = Path(folder)
-    all_content = [load_json(file) for file in p.iterdir()]
-
+    all_content = [ SCP(name=file.name, content=load_json(file)) for file in list(p.glob('**/*.json')) ]
     return all_content
 
 

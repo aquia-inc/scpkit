@@ -1,4 +1,4 @@
-from .util import get_files_in_dir, remove_sid, write_json, dump_scp_to_json, find_key_in_json
+from .util import remove_sid, write_json, find_key_in_json
 from copy import deepcopy
 
 def sort_list_of_dicts(content):
@@ -40,7 +40,7 @@ def make_policies(content, max_characters: int = 10000): # TODO: make this bytes
     for sid in content:
 
         # Get the number of characters for the Sid
-        chars = len(dump_scp_to_json(sid))
+        chars = 1 #len(dump_scp_to_json(sid)) ## FIX
 
         # If the total number of characters plus the sid exceeds the max, make a new policy document
         if (total_chars + chars) > max_characters:
@@ -60,7 +60,7 @@ def make_policies(content, max_characters: int = 10000): # TODO: make this bytes
 def scp_merge(**kwargs):
     """This is the main function that grabs the files, transforms, and writes new files.
     """
-    all_scps = get_files_in_dir(kwargs['sourcefiles'])
+    all_scps = [ scp.content for scp in kwargs['scps'] ]
     merged_scps = merge_json(all_scps)
     if not kwargs['keep-sids']:
         remove_sid(merged_scps)
