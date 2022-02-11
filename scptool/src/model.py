@@ -1,11 +1,10 @@
 import json
 
 class SCP:
-    """[summary]
+    """Main class for a single Service Control Policy
     """
     def __init__(self, name, content):
-        """[summary]
-
+        """
         Args:
             name (str): name or short filename for scp
             content (dict): The SCP content
