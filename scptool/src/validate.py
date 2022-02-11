@@ -30,7 +30,12 @@ def create_client(session, service):
 
 
 def validate_policies(scps, profile):
+    """Validates SCPs 
 
+    Args:
+        scps (list of objects): SCP objects  
+        profile (object): AWS profile name
+    """
     access_analyzer = create_client(create_session(profile), "accessanalyzer")
 
     for scp in scps:
