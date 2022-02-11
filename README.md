@@ -15,3 +15,9 @@ pip install -r requirements
 python main.py [commands]
 ```
 setup.py will be added once stabilized.
+
+Collection of SCPs generated in part from:
+* https://summitroute.com/blog/2020/03/25/aws_scp_best_practices/
+* https://github.com/ScaleSec/terraform_aws_scp
+* https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps_examples.html
+* https://asecure.cloud/l/scp/
