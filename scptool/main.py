@@ -27,6 +27,9 @@ def main():
         validate_policies(scps, arguments['profile'])
 
     elif arguments.get("merge"):
+        # load a config file with selected SCPs
+        # load_config(config)
+        # get_specific_scps(scps, config) < by file name?
         scp_merge(**arguments)
 
     for scp in scps:
