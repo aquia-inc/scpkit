@@ -1,6 +1,7 @@
 from .util import remove_sid, write_json, find_key_in_json
 from copy import deepcopy
 from .model import SCP
+import json
 
 def sort_list_of_dicts(content):
     """[summary]
@@ -43,7 +44,7 @@ def make_policies(content, max_characters: int = 5120):
     for sid in content:
 
         # Get the number of characters for the Sid
-        chars = len(sid.encode('utf-8'))
+        chars = len(json.dumps(sid).encode('utf-8'))
 
         # If the total number of characters plus the sid exceeds the max, make a new policy document
         if (total_chars + chars) > max_characters:

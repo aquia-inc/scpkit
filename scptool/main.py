@@ -21,10 +21,10 @@ def main():
         k.lstrip('-'): v for k, v in docopt(__doc__, version='SCPtool v0.01').items()
     }
 
-    scps = get_files_in_dir(arguments["sourcefiles"])
+    arguments['scps'] = get_files_in_dir(arguments["sourcefiles"])
 
     if arguments.get("validate"):
-        validate_policies(scps, arguments['profile'])
+        validate_policies(arguments['scps'], arguments['profile'])
 
     elif arguments.get("merge"):
         # load a config file with selected SCPs
@@ -32,9 +32,9 @@ def main():
         # get_specific_scps(scps, config) < by file name?
         scp_merge(**arguments)
 
-    for scp in scps:
-        if scp.findings:
-            print(f"{scp.name} : {scp.findings}")
+    # for scp in arguments['scps']:
+    #     if scp.findings:
+    #         print(f"{scp.name} : {scp.findings}")
 
 if __name__ == '__main__':
     main()
