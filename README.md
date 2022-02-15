@@ -9,6 +9,15 @@ This project is intended to accomplish two things
 2. With the current limit of 5 SCPs and a size limit on each of 5120 bytes, multiple SCPs need to be condensed into fewer policies. This tool will merge selected SCPs into the fewest amount of policies, and optionally remove whitespaces characters as they count toward the byte limit.
 
 
+```mermaid
+  stateDiagram-v2
+      [SCPTool] --> Validate
+      [SCPTool] --> Merge
+      Merge --> Validate
+      Validate --> [*]
+      Merge --> [*]
+```
+
 ```
 python3 -m venv .venv
 source .venv/bin/activate
