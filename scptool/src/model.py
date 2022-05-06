@@ -1,4 +1,7 @@
 import json
+from pathlib import Path
+import yaml
+from .util import get_filepaths_in_dir
 
 class SCP:
     """Main class for a single Service Control Policy
@@ -37,3 +40,48 @@ class SCP:
             str: string of readable json
         """
         return json.dumps(self.content, indent=2)
+
+
+class ConfigFile:
+    """Config file generation and update for selecting SCPs
+    """
+
+    def __init__(self, conf_file_location):
+        self.conf_file_location = conf_file_location
+        self.conf = {}
+        # self.load_config()
+
+
+    def create_config(self,filepath):
+        scps = get_filepaths_in_dir(filepath)
+        scpconfigs = [ self.SCPConfig(path=scp, enabled=True, name=scp.name) for scp in scps]
+        pass
+
+    def load_config(self):
+        with open(self.conf_file_location) as f:
+            self.conf = yaml.safe_load(f)
+
+        self.scpconfig = [ self.SCPConfig() for scp in self.conf ]
+
+
+    def update_config(self):
+        pass
+
+
+    def write_config(self):
+        pass
+
+
+    class SCPConfig:
+        """[summary]
+        """
+
+        def __init__(self, path: Path, enabled: bool, name, variables: list = None):
+            self.name = name
+            self.path = path
+            self.enabled = enabled
+            self.variables = variables
+
+
+
+
