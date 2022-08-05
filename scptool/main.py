@@ -1,6 +1,6 @@
 """SCPtool
 Usage:
-    main.py [validate | merge] [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--keep-sids]
+    main.py (validate | merge) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--keep-sids]
 
 Options:
     -h --help                   Show this screen.
