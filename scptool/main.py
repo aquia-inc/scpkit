@@ -27,7 +27,7 @@ def main():
         scp_merge(**arguments)
 
     if arguments.get("validate"):
-        validate_policies(arguments['scps'], arguments['profile'])
+        validate_policies(arguments['scps'], arguments['profile'], arguments['outdir'])
 
 
 if __name__ == '__main__':

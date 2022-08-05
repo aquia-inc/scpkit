@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 class SCP:
     """Main class for a single Service Control Policy
@@ -35,3 +36,18 @@ class SCP:
             str: string of readable json
         """
         return json.dumps(self.content, indent=2)
+
+    @property
+    def findings_json(self):
+        """JSON.dumps readable indented findings
+        Returns:
+            str: string of readable json
+        """
+        return json.dumps(self.findings, indent=2)
+
+    def write_findings_for_scp(self, directory):
+        p = Path(directory)
+        if not p.is_dir():
+            p.mkdir()
+        with open(f'{p}/{self.name}-findings.json', 'w') as f:
+            json.dump(self.findings, f, indent=2)

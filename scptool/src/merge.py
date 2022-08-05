@@ -81,7 +81,7 @@ def scp_merge(**kwargs):
 
     if kwargs.get("validate-after-merge"):
         scps = [ SCP(name=i, content=scp) for i, scp in enumerate(new_policies, 1) ]
-        validate_policies(scps, kwargs['profile'])
+        validate_policies(scps, kwargs['profile'], kwargs['outdir'])
 
 
 def get_files_in_dir(folder):
