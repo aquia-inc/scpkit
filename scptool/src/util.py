@@ -15,15 +15,18 @@ def load_json(filepath):
 
 
 def write_json(content, directory):
-    """[summary]
+    """Writes json to a file
     Args:
-        content ([type]): [description]
-        directory ([type]): [description]
+        content (dict): JSON to write
+        directory ([type]): File output location
     """
     i = 0
     for scp in content:
         i = i + 1
-        with open(f'scp-{i}.json', 'w') as f:
+        p = Path(directory)
+        if not p.is_dir():
+            p.mkdir()
+        with open(f'{p}/scp-{i}.json', 'w') as f:
             json.dump(scp, f, separators=(',', ':'))
 
 

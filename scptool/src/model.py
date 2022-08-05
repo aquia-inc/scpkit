@@ -16,7 +16,7 @@ class SCP:
         """Runs the SCP through Access Analyzer validate_policy command and adds findings to self.findings
 
         Args:
-            aa_client ([type]): [description]
+            aa_client ([client]): Authenticated access analyzer boto client to analyze SCPs
         """
         self.findings = aa_client.validate_policy(policyDocument=self.json, policyType="SERVICE_CONTROL_POLICY").get("findings")
 

@@ -1,6 +1,6 @@
 """SCPtool
 Usage:
-    main.py (validate | merge) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--keep-sids]
+    main.py (validate | merge) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--keep-sids] [--validate-after-merge]
 
 Options:
     -h --help                   Show this screen.
@@ -9,6 +9,7 @@ Options:
     --outdir outdir             Directory to write new SCP files
     --profile profile           AWS profile name
     --keep-sids                 Keeps Sids for metadata purposes
+    --validate-after-merge      Validate the policies after merging them
 
 """
 from docopt import docopt
@@ -22,11 +23,11 @@ def main():
 
     arguments['scps'] = get_files_in_dir(arguments["sourcefiles"])
 
+    if arguments.get("merge"):
+        scp_merge(**arguments)
+
     if arguments.get("validate"):
         validate_policies(arguments['scps'], arguments['profile'])
-
-    elif arguments.get("merge"):
-        scp_merge(**arguments)
 
 
 if __name__ == '__main__':

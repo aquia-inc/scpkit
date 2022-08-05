@@ -2,14 +2,15 @@ from .util import remove_sid, write_json, find_key_in_json, load_json
 from copy import deepcopy
 from pathlib import Path
 from .model import SCP
+from .validate import validate_policies
 import json
 
 def sort_list_of_dicts(content):
-    """[summary]
+    """Sorts a list of dictionaries
     Args:
-        content ([type]): [description]
+        content ([list]): List containing dictionaries
     Returns:
-        [type]: [description]
+        [list]: Sorted list of dictionaries
     """
     content.sort(key=lambda x: sum(len(str(v)) + len(str(k))
                  for k, v in x.items()))
@@ -76,10 +77,12 @@ def scp_merge(**kwargs):
 
     new_policies = make_policies(merged_scps)
 
-    if kwargs.get("validate"):
-        scps = [ SCP(name=i, content=scp) for i, scp in enumerate(new_policies, 1) ]
-
     write_json(new_policies, kwargs['outdir'])
+
+    if kwargs.get("validate-after-merge"):
+        scps = [ SCP(name=i, content=scp) for i, scp in enumerate(new_policies, 1) ]
+        validate_policies(scps, kwargs['profile'])
+
 
 def get_files_in_dir(folder):
     """Loads all JSON files from a directory
