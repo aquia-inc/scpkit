@@ -18,11 +18,12 @@ This project is intended to accomplish two things
       Merge --> [*]
 ```
 
+From the root of the folder:
 ```
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements
-python main.py [commands]
+python -m scptool.main validate --sourcefiles ./scps --profile yourawsprofile
 ```
 setup.py will be added once stabilized.
 
