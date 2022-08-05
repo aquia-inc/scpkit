@@ -25,8 +25,12 @@ source .venv/bin/activate
 pip install -r requirements
 python -m scptool.main validate --sourcefiles ./scps --profile yourawsprofile
 ```
-setup.py will be added once stabilized.
-
+Install as a package
+```
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -U git+https://github.com/aquia-inc/scpkit.git
+```
 Collection of SCPs generated in part from:
 * https://summitroute.com/blog/2020/03/25/aws_scp_best_practices/
 * https://github.com/ScaleSec/terraform_aws_scp
