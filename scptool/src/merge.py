@@ -1,5 +1,6 @@
-from .util import remove_sid, write_json, find_key_in_json
+from .util import remove_sid, write_json, find_key_in_json, load_json
 from copy import deepcopy
+from pathlib import Path
 from .model import SCP
 import json
 
@@ -79,3 +80,15 @@ def scp_merge(**kwargs):
         scps = [ SCP(name=i, content=scp) for i, scp in enumerate(new_policies, 1) ]
 
     write_json(new_policies, kwargs['outdir'])
+
+def get_files_in_dir(folder):
+    """Loads all JSON files from a directory
+    Args:
+        folder (str): Folder that contains JSON files
+    Returns:
+        [list]: list of JSON content from all files
+    """
+
+    p = Path(folder)
+    all_content = [ SCP(name=file.name, content=load_json(file)) for file in list(p.glob('**/*.json')) ]
+    return all_content

@@ -12,9 +12,8 @@ Options:
 
 """
 from docopt import docopt
-from src.validate import validate_policies
-from src.merge import scp_merge
-from src.util import get_files_in_dir
+from .src.validate import validate_policies
+from .src.merge import scp_merge, get_files_in_dir
 
 def main():
     arguments = {
@@ -27,14 +26,8 @@ def main():
         validate_policies(arguments['scps'], arguments['profile'])
 
     elif arguments.get("merge"):
-        # load a config file with selected SCPs
-        # load_config(config)
-        # get_specific_scps(scps, config) < by file name?
         scp_merge(**arguments)
 
-    # for scp in arguments['scps']:
-    #     if scp.findings:
-    #         print(f"{scp.name} : {scp.findings}")
 
 if __name__ == '__main__':
     main()

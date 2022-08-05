@@ -1,7 +1,5 @@
 import json
 from pathlib import Path
-from .model import SCP
-from jinja2 import Environment, meta
 
 
 def load_json(filepath):
@@ -27,19 +25,6 @@ def write_json(content, directory):
         i = i + 1
         with open(f'scp-{i}.json', 'w') as f:
             json.dump(scp, f, separators=(',', ':'))
-
-
-def get_files_in_dir(folder):
-    """Loads all JSON files from a directory
-    Args:
-        folder (str): Folder that contains JSON files
-    Returns:
-        [list]: list of JSON content from all files
-    """
-
-    p = Path(folder)
-    all_content = [ SCP(name=file.name, content=load_json(file)) for file in list(p.glob('**/*.json')) ]
-    return all_content
 
 
 def get_filepaths_in_dir(folder):
@@ -88,10 +73,3 @@ def remove_sid(sids):
             if k.lower() == 'sid':
                 sid.pop(k, None)
     return sids
-
-
-def get_scp_variables(scp):
-
-    env = Environment()
-    ast = env.parse(scp)
-    return meta.find_undeclared_variables(scp)
