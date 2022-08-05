@@ -49,7 +49,7 @@ def find_key_in_json(content, key_to_find):
         content ([dict]): IAM Policy document
         key_to_find ([str]): str of key to find, example: 'Statement'
     Returns:
-        [list]: [description]
+        [list]: Contents of "key_to_find"
     """
     for key, value in content.items():
         if key.lower() == key_to_find.lower():
