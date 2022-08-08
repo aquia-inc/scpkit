@@ -10,7 +10,7 @@
             "Condition": {
                 "StringNotEquals": {
                     "ec2:Owner": [
-                        "accountid"
+                        "{{ accountid }}"
                     ]    
                 }
             }

@@ -1,6 +1,6 @@
 import boto3
 
-def create_session(profile):
+def create_session(profile=None):
     """Creates a boto session
 
     Args:
@@ -9,7 +9,10 @@ def create_session(profile):
     Returns:
         [object]: Authenticated Boto3 session
     """
-    return boto3.Session(profile_name=profile)
+    if profile:
+        return boto3.Session(profile_name=profile)    
+    else:
+        return boto3.Session()
 
 
 def create_client(session, service):
@@ -25,11 +28,7 @@ def create_client(session, service):
     return session.client(service)
 
 
-
-
-
-
-def validate_policies(scps, profile):
+def validate_policies(scps, profile, outdir=None):
     """Validates SCPs 
 
     Args:
@@ -40,3 +39,8 @@ def validate_policies(scps, profile):
 
     for scp in scps:
         scp.validate(access_analyzer)
+        if scp.findings:
+            if outdir:
+                scp.write_findings_for_scp(outdir)
+            else:
+                print(scp.findings_json)

@@ -1,12 +1,16 @@
-from .util import remove_sid, write_json, find_key_in_json
+from .util import remove_sid, write_json, find_key_in_json, load_json
 from copy import deepcopy
+from pathlib import Path
+from .model import SCP
+from .validate import validate_policies
+import json
 
 def sort_list_of_dicts(content):
-    """[summary]
+    """Sorts a list of dictionaries
     Args:
-        content ([type]): [description]
+        content ([list]): List containing dictionaries
     Returns:
-        [type]: [description]
+        [list]: Sorted list of dictionaries
     """
     content.sort(key=lambda x: sum(len(str(v)) + len(str(k))
                  for k, v in x.items()))
@@ -25,8 +29,10 @@ def merge_json(json_blobs):
     return content
 
 
-def make_policies(content, max_characters: int = 10000): # TODO: make this bytes
-    """Combines the policies in order, counts the characters, and starts a new file when it goes over the limit.
+def make_policies(content, max_characters: int = 5120):
+    """Combines the policies in order, counts the bytes, and starts a new file when it goes over the limit.
+        Theres probably a better way to do this with permutations, but that could also be resource intensive.
+
     Args:
         content (list): List of Sid dictionaries (in order of smallest to largest preferred)
         max_characters (int, optional): Max character count. Defaults to 10000.
@@ -40,7 +46,7 @@ def make_policies(content, max_characters: int = 10000): # TODO: make this bytes
     for sid in content:
 
         # Get the number of characters for the Sid
-        chars = 1 #len(dump_scp_to_json(sid)) ## FIX
+        chars = len(json.dumps(sid).encode('utf-8'))
 
         # If the total number of characters plus the sid exceeds the max, make a new policy document
         if (total_chars + chars) > max_characters:
@@ -61,9 +67,31 @@ def scp_merge(**kwargs):
     """This is the main function that grabs the files, transforms, and writes new files.
     """
     all_scps = [ scp.content for scp in kwargs['scps'] ]
+
     merged_scps = merge_json(all_scps)
+
     if not kwargs['keep-sids']:
         remove_sid(merged_scps)
+
     sort_list_of_dicts(merged_scps)
+
     new_policies = make_policies(merged_scps)
+
     write_json(new_policies, kwargs['outdir'])
+
+    if kwargs.get("validate-after-merge"):
+        scps = [ SCP(name=i, content=scp) for i, scp in enumerate(new_policies, 1) ]
+        validate_policies(scps, kwargs['profile'], kwargs['outdir'])
+
+
+def get_files_in_dir(folder):
+    """Loads all JSON files from a directory
+    Args:
+        folder (str): Folder that contains JSON files
+    Returns:
+        [list]: list of JSON content from all files
+    """
+
+    p = Path(folder)
+    all_content = [ SCP(name=file.name, content=load_json(file)) for file in list(p.glob('**/*.json')) ]
+    return all_content

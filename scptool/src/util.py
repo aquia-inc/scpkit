@@ -1,6 +1,6 @@
 import json
 from pathlib import Path
-from .model import SCP
+
 
 def load_json(filepath):
     """Loads json content from files
@@ -15,28 +15,31 @@ def load_json(filepath):
 
 
 def write_json(content, directory):
-    """[summary]
+    """Writes json to a file
     Args:
-        content ([type]): [description]
-        directory ([type]): [description]
+        content (dict): JSON to write
+        directory ([type]): File output location
     """
     i = 0
     for scp in content:
         i = i + 1
-        with open(f'scp-{i}.json', 'w') as f:
+        p = Path(directory)
+        if not p.is_dir():
+            p.mkdir()
+        with open(f'{p}/scp-{i}.json', 'w') as f:
             json.dump(scp, f, separators=(',', ':'))
 
 
-def get_files_in_dir(folder):
-    """Loads all JSON files from a directory
+def get_filepaths_in_dir(folder):
+    """Loads all JSON filepaths from a directory
     Args:
         folder (str): Folder that contains JSON files
     Returns:
-        [list]: list of JSON content from all files
+        [list]: list of JSON files in a directory
     """
 
     p = Path(folder)
-    all_content = [ SCP(name=file.name, content=load_json(file)) for file in list(p.glob('**/*.json')) ]
+    all_content = [ file for file in list(p.glob('**/*.json')) ]
     return all_content
 
 
@@ -46,7 +49,7 @@ def find_key_in_json(content, key_to_find):
         content ([dict]): IAM Policy document
         key_to_find ([str]): str of key to find, example: 'Statement'
     Returns:
-        [list]: [description]
+        [list]: Contents of "key_to_find"
     """
     for key, value in content.items():
         if key.lower() == key_to_find.lower():
