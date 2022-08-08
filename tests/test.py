@@ -8,18 +8,12 @@ from os.path import join, dirname
 
 import pytest #pylint: disable=import-error
 
-# from dotenv import load_dotenv #pylint: disable=import-error
-# from botocore.exceptions import ClientError #pylint: disable=import-error
-# from requests.exceptions import HTTPError #pylint: disable=import-error
-
 from scptool.src.util import find_key_in_json, remove_sid #pylint: disable=import-error
 from scptool.src.model import SCP 
 from scptool.src.merge import sort_list_of_dicts, merge_json
 
 logging.basicConfig(level=logging.DEBUG)
-# logging.getLogger('gcp_token_federation').setLevel(logging.DEBUG)
-# logging.getLogger('botocore').setLevel(logging.WARNING)
-# logging.getLogger('urllib3').setLevel(logging.WARNING)
+
 
 test_scp_1 = {
     "Version": "2012-10-17",
@@ -65,6 +59,7 @@ test_scp_2 = {
 
 TestSCP = SCP("test-scp", test_scp_1)
 
+
 def test_find_key_in_json():
     found_key = find_key_in_json(test_scp_1, "Statement")
     statement = test_scp_1.get("Statement")
@@ -106,6 +101,8 @@ def test_merge_json():
         }
     ]
 
+
+# manipulates dictionary - affects subsequent tests
 def test_remove_sid():
     removed = remove_sid(test_scp_1.get("Statement"))
     assert removed == [
@@ -135,6 +132,8 @@ def test_remove_sid():
         }
     ]
 
+
+# manipulates dictionary - affects subsequent tests
 def test_sort_list_of_dicts():
     sorted = sort_list_of_dicts(test_scp_1.get("Statement"))
     assert sorted == [
