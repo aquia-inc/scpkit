@@ -1,6 +1,6 @@
 """SCPtool
 Usage:
-    main.py (validate | merge) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--keep-sids] [--validate-after-merge]
+    main.py (validate | merge) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--validate-after-merge]
 
 Options:
     -h --help                   Show this screen.
@@ -8,7 +8,6 @@ Options:
     --sourcefiles sourcefiles   Directory path to SCP files in json format
     --outdir outdir             Directory to write new SCP files
     --profile profile           AWS profile name
-    --keep-sids                 Keeps Sids for metadata purposes
     --validate-after-merge      Validate the policies after merging them
 
 """
