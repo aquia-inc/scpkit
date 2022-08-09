@@ -1,9 +1,10 @@
-from .util import remove_sid, write_json, find_key_in_json, load_json
+from .util import remove_sid, write_json, find_key_in_json, load_json, make_actions_and_resources_lists
 from copy import deepcopy
 from pathlib import Path
 from .model import SCP
 from .validate import validate_policies
 import json
+from itertools import groupby
 
 def sort_list_of_dicts(content):
     """Sorts a list of dictionaries
@@ -70,10 +71,12 @@ def scp_merge(**kwargs):
 
     merged_scps = merge_json(all_scps)
 
-    if not kwargs['keep-sids']:
-        remove_sid(merged_scps)
+    cleaned_scps = make_actions_and_resources_lists(merged_scps)
 
-    sort_list_of_dicts(merged_scps)
+    sort_list_of_dicts(cleaned_scps)
+
+    # combine statements with same condition+resource+effect
+    merged_scps = combine_similar_sids(cleaned_scps)
 
     new_policies = make_policies(merged_scps)
 
@@ -95,3 +98,45 @@ def get_files_in_dir(folder):
     p = Path(folder)
     all_content = [ SCP(name=file.name, content=load_json(file)) for file in list(p.glob('**/*.json')) ]
     return all_content
+
+
+def combine_similar_sids(content):
+    """Combines SIDs that have the same Resource, Effect, and Condition (if exists)
+
+    Args:
+        content (list): List of SCP dictionaries
+
+    Returns:
+        list: List of SCP dictionaries minimized where possible.
+    """
+    # groupby works best when dicts are sorted, this sorts by condition, resource, and effect
+    content.sort(key= lambda x: (x.get("Condition") is not None, x['Resource'], x["Effect"]), reverse=True)
+
+    # groups the sids that have the same condition, resource, and effect
+    grouped_data = groupby(content, key=lambda x: (x["Resource"], x["Effect"], x.get("Condition")))
+
+    merged_content = []
+
+    # walk through the groups
+    for (resource, effect, condition), group in grouped_data:
+        new_dict = {"Effect":effect, "Resource":resource}
+
+
+        if condition is not None:
+            new_dict["Condition"] = condition
+
+        # handling combining actions
+        new_dict["Action"] = []
+        new_dict["NotAction"] = []
+        for g in list(group):
+            if g.get("NotAction"):
+                new_dict.pop("Action", None)
+                for action in g.get("NotAction"):
+                    new_dict["NotAction"].append(action)
+            else:
+                new_dict.pop("NotAction", None)
+                for action in g.get("Action"):
+                    new_dict["Action"].append(action)
+        merged_content.append(new_dict)
+
+    return merged_content
