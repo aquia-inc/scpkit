@@ -76,3 +76,22 @@ def remove_sid(sids):
             if k.lower() == 'sid':
                 sid.pop(k, None)
     return sids
+
+def make_actions_and_resources_lists(content):
+    """Makes Actions and Resources values lists if they are not lists.
+
+    Args:
+        content (list): List of SIDs
+
+    Returns:
+        list: List of SIDs that have actions and resources in list format rather than string
+    """
+    for sid in content:
+        if sid.get("Action") and type(sid.get("Action")) is not list:
+            sid["Action"] = [sid.get("Action")]
+        if sid.get("NotAction") and type(sid.get("NotAction")) is not list:
+            sid["NotAction"] = [sid.get("NotAction")]
+        # no such thing as NotResource in SCPs - https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps_syntax.html#scp-elements-table
+        if type(sid.get("Resource")) is not list:
+            sid["Resource"] = [sid.get("Resource")]
+    return content
