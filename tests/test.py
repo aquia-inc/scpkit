@@ -5,12 +5,11 @@ Unit tests
 import logging
 from os.path import join, dirname
 
-
-import pytest #pylint: disable=import-error
+import pytest #pylint: disable=import-errors
 
 from scptool.src.util import find_key_in_json, remove_sid #pylint: disable=import-error
 from scptool.src.model import SCP 
-from scptool.src.merge import sort_list_of_dicts, merge_json
+from scptool.src.merge import sort_list_of_dicts, merge_json, combine_similar_sids
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -163,3 +162,61 @@ def test_sort_list_of_dicts():
         }
     ]
 
+def test_combine_similar_sids():
+    test_data = [{
+                    "Action": ["access-analyzer:DeleteAnalyzer"],
+                    "Resource": ["*"],
+                    "Effect": "Deny"
+                },
+                {
+                    "Effect": "Deny",
+                    "Action": [
+                        "organizations:LeaveOrganization"
+                    ],
+                    "Resource": ["*"]
+                },
+                {
+                    "Sid": "test",
+                    "Action": [
+                        "s3:PutObject"
+                    ],
+                    "Resource": ["*"],
+                    "Effect": "Deny",
+                    "Condition": {
+                        "Null": {
+                            "s3:x-amz-server-side-encryption": "true"
+                        },
+                        "StringNotEquals": {
+                            "s3:x-amz-server-side-encryption": [
+                                "aws:kms"
+                            ]
+                        }
+                    }
+                }
+                ]
+    result = [{
+                    "Action": [
+                        "s3:PutObject"
+                    ],
+                    "Resource": ["*"],
+                    "Effect": "Deny",
+                    "Condition": {
+                        "Null": {
+                            "s3:x-amz-server-side-encryption": "true"
+                        },
+                        "StringNotEquals": {
+                            "s3:x-amz-server-side-encryption": [
+                                "aws:kms"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "Action": ["access-analyzer:DeleteAnalyzer",
+                        "organizations:LeaveOrganization"],
+                    "Resource": ["*"],
+                    "Effect": "Deny"
+                }
+                ]
+    scps = combine_similar_sids(test_data)
+    assert result == scps
