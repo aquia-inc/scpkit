@@ -2,16 +2,10 @@
 Unit tests
 """
 
-import logging
-from os.path import join, dirname
-
 import pytest #pylint: disable=import-errors
 
-from scptool.src.util import find_key_in_json, remove_sid #pylint: disable=import-error
-from scptool.src.model import SCP 
+from scptool.src.util import find_key_in_json
 from scptool.src.merge import sort_list_of_dicts, merge_json, combine_similar_sids
-
-logging.basicConfig(level=logging.DEBUG)
 
 
 test_scp_1 = {
@@ -55,8 +49,6 @@ test_scp_2 = {
         }
     ]
 }
-
-TestSCP = SCP("test-scp", test_scp_1)
 
 
 def test_find_key_in_json():
@@ -102,37 +94,6 @@ def test_merge_json():
 
 
 # manipulates dictionary - affects subsequent tests
-def test_remove_sid():
-    removed = remove_sid(test_scp_1.get("Statement"))
-    assert removed == [
-        {
-            "Action": [
-                "s3:PutObject"
-            ],
-            "Resource": "*",
-            "Effect": "Deny",
-            "Condition": {
-                "Null": {
-                    "s3:x-amz-server-side-encryption": "true"
-                },
-                "StringNotEquals": {
-                    "s3:x-amz-server-side-encryption": [
-                        "aws:kms"
-                    ]
-                }
-            },
-        },
-        {
-            "Effect": "Deny",
-            "Action": [
-                "organizations:LeaveOrganization"
-            ],
-            "Resource": "*"
-        }
-    ]
-
-
-# manipulates dictionary - affects subsequent tests
 def test_sort_list_of_dicts():
     sorted = sort_list_of_dicts(test_scp_1.get("Statement"))
     assert sorted == [
@@ -144,6 +105,7 @@ def test_sort_list_of_dicts():
             "Resource": "*"
         },
         {
+            "Sid": "test",
             "Action": [
                 "s3:PutObject"
             ],
