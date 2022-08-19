@@ -1,5 +1,4 @@
 -r requirements.txt
 pytest
-python-dotenv
 build
 twine
