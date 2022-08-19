@@ -2,7 +2,10 @@
 Unit tests
 """
 
+<<<<<<< HEAD
 from cmath import exp
+=======
+>>>>>>> 2288f056e8d1f6f419bf8826b206881c861d1559
 import pytest #pylint: disable=import-errors
 
 from scptool.src.util import find_key_in_json
