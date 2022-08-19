@@ -14,7 +14,7 @@ def load_json(filepath):
     return data
 
 
-def write_json(content, directory):
+def write_json(content, directory, readable=False):
     """Writes json to a file
     Args:
         content (dict): JSON to write
@@ -27,7 +27,26 @@ def write_json(content, directory):
         if not p.is_dir():
             p.mkdir()
         with open(f'{p}/scp-{i}.json', 'w') as f:
-            json.dump(scp, f, separators=(',', ':'))
+            if readable:
+                json.dump(scp, f, indent=2)
+            else:
+                json.dump(scp, f, separators=(',', ':'))
+
+
+def dump_json(content, readable=False):
+    """Dumps json to a string with either indent 2 or smashed together and no whitespace
+
+    Args:
+        content (dict): SCP
+        readable (bool, optional): If true, adds indent=2 to json, otherwise smashes it all together. Defaults to False.
+
+    Returns:
+        str: SCP
+    """
+    if readable:
+        return json.dumps(content, indent=2)
+    else:
+        return json.dumps(content)
 
 
 def get_filepaths_in_dir(folder):
@@ -63,19 +82,6 @@ def find_key_in_json(content, key_to_find):
         elif type(value) is not str:
             find_key_in_json(content[key], key_to_find)
 
-
-def remove_sid(sids):
-    """Removes Sid key from each sid if it exists. Sid is not necessary and thus takes up unneeded space in an SCP.
-    Args:
-        sids (list): List of Sids
-    Returns:
-        [List]: List of Sids with the Sid key removed regardless of case.
-    """
-    for sid in sids:
-        for k in list(sid):
-            if k.lower() == 'sid':
-                sid.pop(k, None)
-    return sids
 
 def make_actions_and_resources_lists(content):
     """Makes Actions and Resources values lists if they are not lists.

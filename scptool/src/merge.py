@@ -1,4 +1,4 @@
-from .util import remove_sid, write_json, find_key_in_json, load_json, make_actions_and_resources_lists
+from .util import write_json, find_key_in_json, load_json, make_actions_and_resources_lists, dump_json
 from copy import deepcopy
 from pathlib import Path
 from .model import SCP
@@ -30,13 +30,13 @@ def merge_json(json_blobs):
     return content
 
 
-def make_policies(content, max_characters: int = 5120):
+def make_policies(content, readable, max_size: int = 5120):
     """Combines the policies in order, counts the bytes, and starts a new file when it goes over the limit.
         Theres probably a better way to do this with permutations, but that could also be resource intensive.
 
     Args:
         content (list): List of Sid dictionaries (in order of smallest to largest preferred)
-        max_characters (int, optional): Max character count. Defaults to 10000.
+        max_size (int, optional): Max byte count. Defaults to 5120.
     Returns:
         list: List of condensed SCP documents.
     """
@@ -47,10 +47,10 @@ def make_policies(content, max_characters: int = 5120):
     for sid in content:
 
         # Get the number of characters for the Sid
-        chars = len(json.dumps(sid).encode('utf-8'))
+        chars = len((dump_json(sid, readable=readable)).encode('utf-8'))
 
         # If the total number of characters plus the sid exceeds the max, make a new policy document
-        if (total_chars + chars) > max_characters:
+        if (total_chars + chars) > max_size:
             file_list.append(deepcopy(stage))
             stage = {"Version": "2012-10-17", "Statement": []}
             total_chars = 0
@@ -73,14 +73,14 @@ def scp_merge(**kwargs):
 
     cleaned_scps = make_actions_and_resources_lists(merged_scps)
 
-    sort_list_of_dicts(cleaned_scps)
-
     # combine statements with same condition+resource+effect
     merged_scps = combine_similar_sids(cleaned_scps)
 
-    new_policies = make_policies(merged_scps)
+    sort_list_of_dicts(merged_scps)
 
-    write_json(new_policies, kwargs['outdir'])
+    new_policies = make_policies(merged_scps, readable=kwargs.get("readable"))
+
+    write_json(new_policies, kwargs['outdir'], readable=kwargs.get("readable"))
 
     if kwargs.get("validate-after-merge"):
         scps = [ SCP(name=i, content=scp) for i, scp in enumerate(new_policies, 1) ]

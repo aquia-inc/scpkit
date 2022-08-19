@@ -1,6 +1,6 @@
 """SCPtool
 Usage:
-    main.py (validate | merge) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--validate-after-merge]
+    main.py (validate | merge) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--validate-after-merge] [--readable]
 
 Options:
     -h --help                   Show this screen.
@@ -9,7 +9,7 @@ Options:
     --outdir outdir             Directory to write new SCP files
     --profile profile           AWS profile name
     --validate-after-merge      Validate the policies after merging them
-
+    --readable                  Leave indentation and some whitespace to make the SCPs readable
 """
 from docopt import docopt
 from .src.validate import validate_policies
