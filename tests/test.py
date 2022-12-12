@@ -59,38 +59,10 @@ def test_find_key_in_json():
 
 def test_merge_json():
     merged = merge_json([test_scp_1, test_scp_2])
-    assert merged == [
-       {
-            "Sid": "test",
-            "Action": [
-                "s3:PutObject"
-            ],
-            "Resource": "*",
-            "Effect": "Deny",
-            "Condition": {
-                "Null": {
-                    "s3:x-amz-server-side-encryption": "true"
-                },
-                "StringNotEquals": {
-                    "s3:x-amz-server-side-encryption": [
-                        "aws:kms"
-                    ]
-                }
-            }
-        },
-        {
-            "Effect": "Deny",
-            "Action": [
-                "organizations:LeaveOrganization"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Action": "access-analyzer:DeleteAnalyzer",
-            "Resource": "*",
-            "Effect": "Deny"
-        }
-    ]
+    expected = []
+    expected.extend(test_scp_1.get("Statement"))
+    expected.extend(test_scp_2.get("Statement"))
+    assert merged == expected
 
 
 # manipulates dictionary - affects subsequent tests
