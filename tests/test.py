@@ -4,8 +4,8 @@ Unit tests
 
 import pytest #pylint: disable=import-errors
 
-from scptool.src.util import find_key_in_json
-from scptool.src.merge import sort_list_of_dicts, merge_json, combine_similar_sids
+from scpkit.src.util import find_key_in_json
+from scpkit.src.merge import sort_list_of_dicts, merge_json, combine_similar_sids
 
 
 test_scp_1 = {
