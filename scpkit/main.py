@@ -1,4 +1,4 @@
-"""SCPtool
+"""SCPkit
 Usage:
     main.py (validate | merge) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--validate-after-merge] [--readable]
 
