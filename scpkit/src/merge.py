@@ -3,7 +3,6 @@ from copy import deepcopy
 from pathlib import Path
 from .model import SCP
 from .validate import validate_policies
-import json
 from itertools import groupby
 
 def sort_list_of_dicts(content):
