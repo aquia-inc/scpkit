@@ -1,0 +1,10 @@
+## What does this PR do?
+
+[//]: # (Required: Describe the effects of your pull request in detail. If
+multiple changes are involved, a bulleted list is often useful.)
+
+## Completion checklist
+
+- [ ] Additions and changes have unit tests
+- [ ] Unit tests, Pylint, security testing, and Integration tests are passing. GitHub actions does this automatically
+- [ ] The pull request has been appropriately labeled using the provided PR labels (major, minor, fix, maintenance, documentation)
