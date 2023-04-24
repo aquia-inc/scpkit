@@ -17,7 +17,7 @@ from .src.merge import scp_merge, get_files_in_dir
 
 def main():
     arguments = {
-        k.lstrip('-'): v for k, v in docopt(__doc__, version='SCPtool v0.01').items()
+        k.lstrip('-'): v for k, v in docopt(__doc__).items()
     }
 
     arguments['scps'] = get_files_in_dir(arguments["sourcefiles"])

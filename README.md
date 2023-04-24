@@ -23,7 +23,7 @@ From the root of the folder:
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements
-python -m scptool.main validate --sourcefiles ./scps --profile yourawsprofile
+python -m scpkit.main validate --sourcefiles ./scps --profile yourawsprofile
 ```
 Install as a package
 ```
