@@ -6,7 +6,7 @@ Options:
     -h --help                   Show this screen.
     --version                   Show version.
     --sourcefiles sourcefiles   Directory path to SCP files in json format
-    --outdir outdir             Directory to write new SCP files
+    --outdir outdir             Directory to write new SCP files [Default: ./]
     --profile profile           AWS profile name
     --validate-after-merge      Validate the policies after merging them
     --readable                  Leave indentation and some whitespace to make the SCPs readable
