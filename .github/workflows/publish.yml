@@ -1,0 +1,40 @@
+name: Publish Python Package to PYPI
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  publish-release:
+    name: Build and publish to PyPI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Update setup.cfg version from tag
+        run: |
+          VERSION=${{ github.event.release.tag_name }}
+          VERSION=${VERSION:1}
+          sed -i "s/version =.*/version = ${VERSION}/g" setup.cfg
+
+      - name: Install build
+        run: |
+          pip install -q build
+
+      - name: Build package
+        run: |
+          python -m build
+
+      - name: Publish distribution 📦 to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
