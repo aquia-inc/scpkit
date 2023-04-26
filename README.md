@@ -60,14 +60,14 @@ From the root of the folder:
 ```
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements
+pip install -r requirements.txt
 python -m scpkit.main validate --sourcefiles ./scps --profile yourawsprofile
 ```
 Install as a package
 ```
 python3 -m venv .venv
 source .venv/bin/activate
-pip3 install -U git+https://github.com/aquia-inc/scpkit.git
+pip install -U git+https://github.com/aquia-inc/scpkit.git
 ```
 
 ## References
