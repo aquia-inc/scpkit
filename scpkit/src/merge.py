@@ -1,4 +1,4 @@
-from .util import write_json, find_key_in_json, load_json, make_actions_and_resources_lists, dump_json
+from .util import write_json, find_key_in_json, load_json, make_actions_and_resources_lists, dump_json, get_files_in_dir
 from copy import deepcopy
 from pathlib import Path
 from .model import SCP
@@ -84,19 +84,6 @@ def scp_merge(**kwargs):
     if kwargs.get("validate-after-merge"):
         scps = [ SCP(name=i, content=scp) for i, scp in enumerate(new_policies, 1) ]
         validate_policies(scps, kwargs['profile'], kwargs['outdir'])
-
-
-def get_files_in_dir(folder):
-    """Loads all JSON files from a directory
-    Args:
-        folder (str): Folder that contains JSON files
-    Returns:
-        [list]: list of JSON content from all files
-    """
-
-    p = Path(folder)
-    all_content = [ SCP(name=file.name, content=load_json(file)) for file in list(p.glob('**/*.json')) ]
-    return all_content
 
 
 def combine_similar_sids(content):
