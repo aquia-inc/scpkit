@@ -3,7 +3,7 @@
 
 ## Overview
 
-This project provides a python module to aid in Service Control Policy management in AWS accounts. See our release [blog](https://blog.aquia.us/blog/) for additional details.
+This project provides a python module to aid in Service Control Policy management in AWS accounts.
 
 SCPs have a current limit of 5 total per entity, and a size limit on each of 5120 bytes. This tool will merge selected SCPs into the fewest amount of policies, and optionally remove whitespace characters as they count toward the byte limit.
 

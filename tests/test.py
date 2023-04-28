@@ -4,7 +4,7 @@ Unit tests
 
 import pytest #pylint: disable=import-errors
 
-from scpkit.src.util import find_key_in_json
+from scpkit.src.util import find_key_in_json, get_files_in_dir, load_json
 from scpkit.src.merge import sort_list_of_dicts, merge_json, combine_similar_sids
 
 
@@ -154,3 +154,12 @@ def test_combine_similar_sids():
                 ]
     scps = combine_similar_sids(test_data)
     assert result == scps
+
+
+def test_get_files_in_dir():
+    f = get_files_in_dir("./tests/testfiles")
+    assert len(f) == 2
+
+def test_get_file_in_dir():
+    f = get_files_in_dir("./tests/testfiles/test-scp-1.json")
+    assert len(f) == 1

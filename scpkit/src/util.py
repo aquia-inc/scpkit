@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from .model import SCP
 
 
 def load_json(filepath):
@@ -49,16 +50,27 @@ def dump_json(content, readable=False):
         return json.dumps(content)
 
 
-def get_filepaths_in_dir(folder):
-    """Loads all JSON filepaths from a directory
+def get_files_in_dir(filepath):
+    """Loads all JSON files from a directory
     Args:
-        folder (str): Folder that contains JSON files
+        filepath (str): Folder that contains JSON files or an individual json file
     Returns:
-        [list]: list of JSON files in a directory
+        [list]: list of JSON content from all files
     """
 
-    p = Path(folder)
-    all_content = [ file for file in list(p.glob('**/*.json')) ]
+    p = Path(filepath)
+
+    if not p.exists():
+        raise FileNotFoundError(f"The file {p} does not exist.")
+
+    if p.is_dir(): 
+        p = list(p.glob('**/*.json'))
+    elif p.is_file():
+        p = [p]
+    else:
+        raise Exception
+
+    all_content = [ SCP(name=file.name, content=load_json(file)) for file in p ]
     return all_content
 
 

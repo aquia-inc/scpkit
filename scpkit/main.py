@@ -5,7 +5,7 @@ Usage:
 Options:
     -h --help                   Show this screen.
     --version                   Show version.
-    --sourcefiles sourcefiles   Directory path to SCP files in json format
+    --sourcefiles sourcefiles   Directory path to SCP files in json format or a single SCP file
     --outdir outdir             Directory to write new SCP files [Default: ./]
     --profile profile           AWS profile name
     --validate-after-merge      Validate the policies after merging them
@@ -13,7 +13,8 @@ Options:
 """
 from docopt import docopt
 from .src.validate import validate_policies
-from .src.merge import scp_merge, get_files_in_dir
+from .src.merge import scp_merge
+from .src.util import get_files_in_dir
 
 def main():
     arguments = {
