@@ -8,12 +8,12 @@ template: |
 version-resolver:
   major:
     labels:
-      - 'type: major'
+      - 'major'
   minor:
     labels:
-      - 'type: minor'
+      - 'minor'
   patch:
     labels:
-      - 'type: fix'
-      - 'type: maintenance'
-      - 'type: docs'
+      - 'fix'
+      - 'maintenance'
+      - 'docs'
