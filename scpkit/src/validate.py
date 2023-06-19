@@ -49,7 +49,7 @@ def validate_policies(scps, profile, outdir=None, console=False):
             if outdir:
                 scp.write_findings_for_scp(outdir)
                 if(console):
-                    print("    ℹ️  More details check log file {outdir}/{scp.name}-findings.json")
+                    print(f"    ℹ️  More details check log file {outdir}/{scp.name}-findings.json")
             else:
                 print(scp.findings_json)
                 if(console):
