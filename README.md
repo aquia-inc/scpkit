@@ -53,6 +53,7 @@ Accounts are presented as ellipses, organizational units are rectangles, and SCP
 ![Visualization of an Organization](./visualize-org.png)
 
 The full CLI is documented through docopt
+```
 """SCPkit
 Usage:
     main.py (validate | merge | visualize) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--validate-after-merge] [--readable] [--console]
@@ -67,7 +68,7 @@ Options:
     --readable                  Leave indentation and some whitespace to make the SCPs readable
     --console                   Adds Log to console
 """
-
+```
 
 ## Local development
 From the root of the folder:
