@@ -5,16 +5,18 @@
 
 This project provides a Python module to aid in Service Control Policy (SCP) management in AWS accounts.
 
-SCPs have a current limit of 5 total per entity, and a size limit on each of 5120 bytes. This tool will merge selected SCPs into the fewest amount of policies, and optionally remove whitespace characters as they count toward the byte limit.
+SCPs have a current limit of 5 total per entity, and a size limit on each of 5120 characters. This tool will merge selected SCPs into the fewest amount of policies, and optionally remove whitespace characters as they count toward the character limit.
 
 
 ```mermaid
   stateDiagram-v2
       [SCPTool] --> Validate
       [SCPTool] --> Merge
+      [SCPTool] --> Visualize
       Merge --> Validate
       Validate --> [*]
       Merge --> [*]
+      Visualize --> [*]
 ```
 ## Using SCPkit
 SCPkit can be installed from PyPI
@@ -38,21 +40,33 @@ Optional validation with output locally:
 scpkit merge --sourcefiles /path/to/scps --outdir /path/to/directory --validate-after-merge --profile yourawsprofile
 ```
 
-The full CLI is documented through docopt
+### Creating a visualization of an AWS Organization, OUs, Accounts, and SCPs
+Creating this visualization requires you be authenticated with either the Org management account, or a delegated administrator. See the [AWS Documentation](https://docs.aws.amazon.com/organizations/latest/userguide/orgs_delegate_policies_example_view_accts_orgs.html) page for more info on delegating Organizations.
+
+This will output a graph pdf and graphviz data file in the specified directory (or local directory, if outdir is not specified.)
+
 ```
-SCPkit
+scpkit visualize --profile yourawsprofile --outdir ./org-graph
+```
+Accounts are presented as ellipses, organizational units are rectangles, and SCPs are trapezoids.
+
+![Visualization of an Organization](./visualize-org.png)
+
+The full CLI is documented through docopt
+"""SCPkit
 Usage:
-    main.py (validate | merge) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--validate-after-merge] [--readable]
+    main.py (validate | merge | visualize) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--validate-after-merge] [--readable] [--console]
 
 Options:
     -h --help                   Show this screen.
     --version                   Show version.
-    --sourcefiles sourcefiles   Directory path to SCP files in json format
+    --sourcefiles sourcefiles   Directory path to SCP files in json format or a single SCP file
     --outdir outdir             Directory to write new SCP files [Default: ./]
     --profile profile           AWS profile name
     --validate-after-merge      Validate the policies after merging them
     --readable                  Leave indentation and some whitespace to make the SCPs readable
-```
+    --console                   Adds Log to console
+"""
 
 
 ## Local development
