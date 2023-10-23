@@ -1,4 +1,5 @@
 import json
+import boto3
 from pathlib import Path
 from .model import SCP
 
@@ -113,3 +114,47 @@ def make_actions_and_resources_lists(content):
         if type(sid.get("Resource")) is not list:
             sid["Resource"] = [sid.get("Resource")]
     return content
+
+
+def create_session(profile=None):
+    """Creates a boto session
+
+    Args:
+        profile (string): AWS profile name
+
+    Returns:
+        [object]: Authenticated Boto3 session
+    """
+    if profile:
+        return boto3.Session(profile_name=profile)
+    else:
+        return boto3.Session()
+
+
+def create_client(session, service):
+    """Creates a service client from a boto session
+
+    Args:
+        session (object): Authenicated boto3 session
+        service (string): service name to create the client for
+
+    Returns:
+        [object]: client session for specific aws service (eg. accessanalyzer)
+    """
+    return session.client(service)
+
+
+def paginate(service, method, **method_args):
+    """Paginates through the results of a method.
+
+    Args:
+        service (boto3.client): The AWS service client.
+        method (str): The name of the method to paginate.
+        method_args (dict): The arguments to pass to the method.
+
+    Returns:
+        list: A list of paginated results.
+    """
+    paginator = service.get_paginator(method)
+    results = paginator.paginate(**method_args)
+    return results

@@ -30,12 +30,12 @@ def merge_json(json_blobs):
 
 
 def make_policies(content, readable, max_size: int = 5120):
-    """Combines the policies in order, counts the bytes, and starts a new file when it goes over the limit.
+    """Combines the policies in order, counts the characters, and starts a new file when it goes over the limit.
         Theres probably a better way to do this with permutations, but that could also be resource intensive.
 
     Args:
         content (list): List of Sid dictionaries (in order of smallest to largest preferred)
-        max_size (int, optional): Max byte count. Defaults to 5120.
+        max_size (int, optional): Max character count. Defaults to 5120.
     Returns:
         list: List of condensed SCP documents.
     """

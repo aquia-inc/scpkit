@@ -1,6 +1,6 @@
 """SCPkit
 Usage:
-    main.py (validate | merge) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--validate-after-merge] [--readable] [--console]
+    main.py (validate | merge | visualize) [--sourcefiles sourcefiles] [--profile profile] [ --outdir outdir] [--validate-after-merge] [--readable] [--console]
 
 Options:
     -h --help                   Show this screen.
@@ -16,13 +16,17 @@ from docopt import docopt
 from .src.validate import validate_policies
 from .src.merge import scp_merge
 from .src.util import get_files_in_dir
+from .src.visualize import visualize_policies
 
 def main():
     arguments = {
         k.lstrip('-'): v for k, v in docopt(__doc__).items()
     }
 
-    arguments['scps'] = get_files_in_dir(arguments["sourcefiles"])
+    if arguments.get("visualize"):
+        visualize_policies(arguments['profile'], arguments['outdir'])
+    else:
+        arguments['scps'] = get_files_in_dir(arguments["sourcefiles"])
 
     if arguments.get("merge"):
         scp_merge(**arguments)
